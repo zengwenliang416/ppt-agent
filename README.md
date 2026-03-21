@@ -7,7 +7,7 @@
 ## 安装
 
 ```bash
-claude plugin add github:zengwenliang416/ppt-agent
+claude plugin install github:zengwenliang416/ppt-agent
 ```
 
 ## 使用
