@@ -35,7 +35,7 @@ Handle content authoring: structured outline creation using Pyramid Principle an
    - `outline`:
      - Read the Pyramid Principle prompt from `skills/_shared/references/prompts/outline-architect.md` (relative to plugin root).
      - Check `${run_dir}/requirements.md` for presentation purpose. Apply the Framework Selection heuristic from `outline-architect.md` to choose the optimal structural framework. Default to Pyramid Principle if purpose is unclear.
-     - Apply the methodology: 结论先行, 以上统下, 归类分组, 逻辑递进.
+     - Apply the methodology: 結論先行, 以上統下, 歸類分組, 邏輯遞進.
      - Generate `outline.json` following the **full schema** defined in `skills/_shared/references/prompts/outline-architect.md` (the single source of truth for outline structure). Required fields include: `title`, `subtitle`, `total_pages`, `cover`, `table_of_contents`, `parts[{ title, key_message, pages[{ index, title, subtitle, type, layout_type, key_points, data_elements, notes }] }]`, `end_page`.
      - The `data_elements` array in each page should use typed entries:
        ```json

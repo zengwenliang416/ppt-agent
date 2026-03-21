@@ -12,7 +12,7 @@
       "domain": "prompt",
       "name": "Outline Architect",
       "file_path": "prompts/outline-architect.md",
-      "keywords": ["outline", "structure", "pyramid", "金字塔", "大纲"],
+      "keywords": ["outline", "structure", "pyramid", "金字塔", "大綱"],
       "description": "Pyramid Principle methodology for PPT outline generation",
       "use_cases": ["PPT structure planning", "content organization"]
     },
@@ -21,7 +21,7 @@
       "domain": "prompt",
       "name": "Bento Grid Layout",
       "file_path": "prompts/bento-grid-layout.md",
-      "keywords": ["bento", "grid", "layout", "cards", "便当", "网格", "布局"],
+      "keywords": ["bento", "grid", "layout", "cards", "便當", "網格", "佈局"],
       "description": "Bento Grid card-based layout specification for presentation slides",
       "use_cases": ["slide layout", "card arrangement", "visual hierarchy"]
     },
@@ -30,7 +30,7 @@
       "domain": "prompt",
       "name": "SVG Generator",
       "file_path": "prompts/svg-generator.md",
-      "keywords": ["svg", "generate", "slide", "presentation", "幻灯片"],
+      "keywords": ["svg", "generate", "slide", "presentation", "幻燈片"],
       "description": "SVG presentation page generation rules and templates",
       "use_cases": ["SVG slide creation", "design implementation"]
     },
@@ -39,7 +39,7 @@
       "domain": "prompt",
       "name": "Cognitive Design Principles",
       "file_path": "prompts/cognitive-design-principles.md",
-      "keywords": ["cognitive", "mayer", "miller", "gestalt", "hierarchy", "认知", "心理学"],
+      "keywords": ["cognitive", "mayer", "miller", "gestalt", "hierarchy", "認知", "心理學"],
       "description": "Evidence-based cognitive science principles for presentation design (Miller's Law, Mayer's principles, Gestalt, cognitive load theory)",
       "use_cases": ["slide content planning", "layout decisions", "information density management"]
     },
@@ -48,7 +48,7 @@
       "domain": "style",
       "name": "Business Professional",
       "file_path": "styles/business.yaml",
-      "keywords": ["business", "professional", "corporate", "商务", "专业"],
+      "keywords": ["business", "professional", "corporate", "商務", "專業"],
       "description": "Clean, authoritative business style with navy blue and warm orange accent (extended v1.1: gradients, elevation, decoration, slide_type_overrides)",
       "use_cases": ["corporate presentations", "business reports", "investor pitches"]
     },
@@ -57,7 +57,7 @@
       "domain": "style",
       "name": "Tech Modern",
       "file_path": "styles/tech.yaml",
-      "keywords": ["tech", "modern", "dark", "科技", "现代", "暗色"],
+      "keywords": ["tech", "modern", "dark", "科技", "現代", "暗色"],
       "description": "Dark mode tech style with indigo and cyan accents (extended v1.1: gradients, elevation, decoration, slide_type_overrides)",
       "use_cases": ["tech demos", "product launches", "developer talks"]
     },
@@ -66,7 +66,7 @@
       "domain": "style",
       "name": "Creative Bold",
       "file_path": "styles/creative.yaml",
-      "keywords": ["creative", "bold", "colorful", "创意", "大胆", "鲜艳"],
+      "keywords": ["creative", "bold", "colorful", "創意", "大膽", "鮮豔"],
       "description": "Energetic creative style with violet, pink, and amber (extended v1.1: gradients, elevation, decoration, slide_type_overrides)",
       "use_cases": ["design presentations", "marketing pitches", "creative proposals"]
     },
@@ -75,7 +75,7 @@
       "domain": "style",
       "name": "Minimal Clean",
       "file_path": "styles/minimal.yaml",
-      "keywords": ["minimal", "clean", "simple", "极简", "简洁"],
+      "keywords": ["minimal", "clean", "simple", "極簡", "簡潔"],
       "description": "Serene minimal style with maximum whitespace and subtle accents (extended v1.1: gradients, elevation, decoration, slide_type_overrides)",
       "use_cases": ["keynotes", "academic presentations", "thought leadership"]
     },
@@ -84,7 +84,7 @@
       "domain": "asset",
       "name": "HTML Preview Template",
       "file_path": "assets/preview-template.html",
-      "keywords": ["preview", "html", "gallery", "present", "预览", "展示"],
+      "keywords": ["preview", "html", "gallery", "present", "預覽", "展示"],
       "description": "Interactive HTML preview page template with Gallery/Scroll/Present modes and keyboard navigation",
       "use_cases": ["delivery phase", "slide preview", "presentation viewing"]
     }

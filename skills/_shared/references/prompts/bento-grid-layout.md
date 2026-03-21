@@ -2,7 +2,7 @@
 
 ## Overview
 
-Bento Grid (便当网格) is a flexible card-based layout system inspired by Japanese bento boxes. Cards of varying sizes are arranged in a grid to create visual hierarchy and interest while maintaining clean organization.
+Bento Grid (便當網格) is a flexible card-based layout system inspired by Japanese bento boxes. Cards of varying sizes are arranged in a grid to create visual hierarchy and interest while maintaining clean organization.
 
 ## Canvas
 

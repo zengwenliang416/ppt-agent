@@ -125,7 +125,7 @@ Generate professional PPT slides as SVG files (1280x720) through a structured mu
 
 3. If user requests changes, re-run content-core with adjusted requirements.
 
-## Phase 5: Planning Draft (策划稿)
+## Phase 5: Planning Draft (策劃稿)
 
 1. Run draft generation:
    ```text
@@ -135,7 +135,7 @@ Generate professional PPT slides as SVG files (1280x720) through a structured mu
    Outputs `${RUN_DIR}/draft-manifest.json`.
    content-core sends `draft_slide_ready(index=N)` per-slide as each draft completes, enabling Phase 6 to begin designing earlier slides while later drafts are still being generated.
 
-## Phase 6: Design Draft (设计稿) + Gemini Review
+## Phase 6: Design Draft (設計稿) + Gemini Review
 
 **Pipeline optimization**: Do not wait for all drafts to complete. As soon as `draft_slide_ready(index=N)` is received, launch slide-core for that slide. Use a sliding window of `min(3, remaining_slides)` parallel slide-core agents to balance throughput and resource usage.
 
@@ -186,14 +186,14 @@ For each slide (or in batches):
    1. Read the template from `plugins/ppt-agent/skills/_shared/assets/preview-template.html`.
    2. Read `${RUN_DIR}/outline.json` to extract slide titles for labels.
    3. Replace template placeholders:
-      - `{{TITLE}}` → presentation title from outline.json (e.g. "新一代小米SU7发布会")
+      - `{{TITLE}}` → presentation title from outline.json (e.g. "新一代小米SU7發布會")
       - `{{LOGO}}` → short brand mark (2-3 chars, e.g. "Mi", "PPT")
       - `{{ACCENT_COLOR}}` → style accent color hex (from style YAML, e.g. `#FF6900`)
       - `{{SLIDES_JSON}}` → JSON array of slide objects:
         ```json
         [
-          { "file": "slide-01.svg", "label": "封面 — 主标题" },
-          { "file": "slide-02.svg", "label": "第二页标题" }
+          { "file": "slide-01.svg", "label": "封面 — 主標題" },
+          { "file": "slide-02.svg", "label": "第二頁標題" }
         ]
         ```
         Build labels from `outline.json`: use each page's `title` field. For the cover page use `cover.title`, for the end page use `end_page.title`.

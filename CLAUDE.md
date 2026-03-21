@@ -1,12 +1,12 @@
 # PPT Agent Plugin
 
-Always answer in Chinese (Simplified).
+Always answer in Chinese (Traditional).
 
 <available-skills>
 
 | Skill             | Trigger                                                                   | Description                                                              |
 | ----------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `/ppt-agent:ppt`  | "PPT", "slides", "幻灯片", "做个PPT", "slide deck", "演示文稿", "做演示" | PPT slide generation workflow: init → research → outline → design → delivery |
+| `/ppt-agent:ppt`  | "PPT", "slides", "幻燈片", "做個PPT", "slide deck", "簡報", "做簡報" | PPT slide generation workflow: init → research → outline → design → delivery |
 
 </available-skills>
 
@@ -50,7 +50,7 @@ The delivery phase generates an interactive `index.html` alongside the SVG files
 
 | Placeholder | Source | Example |
 |-------------|--------|---------|
-| `{{TITLE}}` | `outline.json` title | `新一代小米SU7发布会` |
+| `{{TITLE}}` | `outline.json` title | `新一代小米SU7發布會` |
 | `{{LOGO}}` | Short brand mark (2-3 chars) | `Mi`, `PPT` |
 | `{{ACCENT_COLOR}}` | Style YAML accent hex | `#FF6900` |
 | `{{SLIDES_JSON}}` | JSON array from outline.json | `[{"file":"slide-01.svg","label":"封面"}]` |
