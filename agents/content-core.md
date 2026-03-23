@@ -10,7 +10,7 @@ memory: project
 model: opus
 color: blue
 effort: high
-maxTurns: 25
+maxTurns: 35
 disallowedTools:
   - Agent
 ---
@@ -41,7 +41,7 @@ Handle content authoring: structured outline creation using Pyramid Principle an
      - Apply the methodology: 结论先行, 以上统下, 归类分组, 逻辑递进.
      - Respect the page range from `input.md` (e.g. `--pages=10-15`). Ensure `total_pages` in the generated outline falls within the specified range. If content naturally requires fewer or more pages, stay within ±1 of the range boundaries.
      - Consider the `--style` from `input.md` when selecting `layout_type` for each page. Different styles favor different layouts (e.g. `minimal` favors `single_focus` and `two_column_symmetric`; `creative` favors `hero_grid` and `mixed_grid`).
-     - Generate `outline.json` following the **full schema** defined in `skills/_shared/references/prompts/outline-architect.md` (the single source of truth for outline structure). Required fields include: `title`, `subtitle`, `total_pages`, `cover`, `table_of_contents`, `parts[{ title, key_message, pages[{ index, title, subtitle, type, layout_type, key_points, data_elements, notes }] }]`, `end_page`.
+     - Generate `outline.json` following the **full schema** defined in `skills/_shared/references/prompts/outline-architect.md` (the single source of truth for outline structure). Required fields include: `title`, `subtitle`, `total_pages`, `approved`, `cover`, `table_of_contents`, `parts[{ title, key_message, pages[{ index, title, subtitle, type, layout_type, key_points, data_elements, notes }] }]`, `end_page`. Always set `"approved": false` when generating — the lead orchestrator sets it to `true` after user confirmation.
      - The `data_elements` array in each page should use typed entries:
        ```json
        "data_elements": [
@@ -78,7 +78,7 @@ Handle content authoring: structured outline creation using Pyramid Principle an
      - Focus on content placement, typography hierarchy, and basic layout.
      - Write each SVG to `drafts/slide-{nn}.svg` (01-indexed).
      - Write `draft-manifest.json` listing all pages with metadata: `{ slides: [{ index, title, type, file }] }`.
-     - After writing EACH slide draft, send `draft_slide_ready(index=N)` to lead (enables pipeline with Phase 6).
+     - **Batch signaling**: After every 3 slides (or when all remaining drafts are done), send a single `draft_slides_ready(indices=[N,N+1,N+2])` to lead. This reduces turn consumption while still enabling Phase 6 pipeline overlap. Do NOT send per-slide signals.
      - After all drafts are written, send `draft_complete` to lead.
 
 ## Communication

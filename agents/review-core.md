@@ -6,11 +6,12 @@ tools:
   - Write
   - Skill
   - SendMessage
+  - Bash
 memory: project
 model: sonnet
 color: yellow
 effort: medium
-maxTurns: 15
+maxTurns: 20
 disallowedTools:
   - Agent
 ---

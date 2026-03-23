@@ -33,6 +33,7 @@ Generate a JSON structure wrapped in `[PPT_OUTLINE]` markers:
   "title": "Presentation Title",
   "subtitle": "Optional subtitle",
   "total_pages": 12,
+  "approved": false,
   "cover": {
     "title": "Main Title",
     "subtitle": "Subtitle or tagline",
@@ -71,6 +72,10 @@ Generate a JSON structure wrapped in `[PPT_OUTLINE]` markers:
 }
 [/PPT_OUTLINE]
 ```
+
+### Approval Field
+
+The `approved` field tracks whether the user has explicitly approved the outline at the Phase 4 Hard Stop. Generated outlines MUST set `"approved": false`. The lead orchestrator sets it to `true` only after user confirmation. Resume logic (`--run-id`) MUST check this field — if `approved` is `false` or missing, Phase 4 Hard Stop must be re-entered regardless of whether `outline.json` exists.
 
 ### Speaker Notes Schema
 

@@ -11,7 +11,7 @@ memory: project
 model: opus
 color: cyan
 effort: high
-maxTurns: 30
+maxTurns: 20
 disallowedTools:
   - Agent
 ---

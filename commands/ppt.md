@@ -76,7 +76,8 @@ Generate professional PPT slides as SVG files (1280x720) through a structured mu
    **Resume detection** (when `--run-id` is provided): Check existing artifacts to determine the resume point:
    - `slide-status.json` exists → resume Phase 6 from first incomplete slide
    - `draft-manifest.json` exists but no `slide-status.json` → resume at Phase 6 start
-   - `outline.json` exists but no `draft-manifest.json` → resume at Phase 5
+   - `outline.json` exists with `"approved": true` but no `draft-manifest.json` → resume at Phase 5
+   - `outline.json` exists with `"approved": false` or missing → resume at Phase 4 (re-enter Hard Stop for user approval)
    - `materials.md` exists but no `outline.json` → resume at Phase 4
    - `requirements.md` exists but no `materials.md` → resume at Phase 3
    - `research-context.md` exists but no `requirements.md` → resume at Phase 2 (user confirmation)
@@ -135,7 +136,9 @@ Generate professional PPT slides as SVG files (1280x720) through a structured mu
    User can approve, adjust page order, add/remove sections, or change emphasis.
    Do NOT proceed until user approves.
 
-3. If user requests changes, re-run content-core in **revise** mode with the user's feedback:
+3. **After user approves**: Set `"approved": true` in `outline.json` and write the updated file. This field is the resume guard — `--run-id` resume checks it to determine whether Phase 4 Hard Stop was completed.
+
+4. If user requests changes, re-run content-core in **revise** mode with the user's feedback:
    ```text
    Task(subagent_type="ppt-agent:content-core", prompt="run_dir=${RUN_DIR} mode=revise feedback=${USER_FEEDBACK}")
    ```
@@ -149,11 +152,11 @@ Generate professional PPT slides as SVG files (1280x720) through a structured mu
    ```
    Generates simple SVG pages: `${RUN_DIR}/drafts/slide-{nn}.svg`.
    Outputs `${RUN_DIR}/draft-manifest.json`.
-   content-core sends `draft_slide_ready(index=N)` per-slide as each draft completes, enabling Phase 6 to begin designing earlier slides while later drafts are still being generated.
+   content-core sends `draft_slides_ready(indices=[N,N+1,N+2])` in batches of 3 as drafts complete, enabling Phase 6 pipeline overlap while conserving turn budget.
 
 ## Phase 6: Design Draft (设计稿) + Gemini Review
 
-**Pipeline optimization**: Do not wait for all drafts to complete. As soon as `draft_slide_ready(index=N)` is received, launch slide-core for that slide. Use a sliding window of `min(3, remaining_slides)` parallel slide-core agents to balance throughput and resource usage.
+**Pipeline optimization**: Do not wait for all drafts to complete. As soon as `draft_slides_ready(indices=[...])` is received, launch slide-core for each slide in the batch. Use a sliding window of `min(3, remaining_slides)` parallel slide-core agents to balance throughput and resource usage.
 
 **Incremental progress tracking**: Maintain `${RUN_DIR}/slide-status.json` throughout Phase 6. After each slide completes its design→review cycle (pass or accepted_with_warning), append its entry immediately. This enables `--run-id` resume to skip already-completed slides. Format:
 ```json
