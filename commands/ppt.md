@@ -48,14 +48,27 @@ Generate professional PPT slides as SVG files (1280x720) through a structured mu
 1. Parse flags: `--style` (optional), `--pages` (default: `10-15`), `--run-id`.
    Available styles are discovered from `skills/_shared/index.json` (filter resources where `domain == "style"`). Do NOT hardcode style names — read the registry.
 
-   **Style selection** (if `--style` not provided):
-   Read all available styles from index.json and call `AskUserQuestion` to let the user choose. Present styles grouped by mood:
-   - **Professional**: business, minimal, notion, scientific, editorial-infographic
-   - **Creative**: creative, bold-editorial, vector-illustration, sketch-notes, watercolor
-   - **Tech/Dark**: tech, blueprint, intuition-machine, pixel-art
-   - **Thematic**: chalkboard, fantasy-animation, vintage
+   **Style selection** (if `--style` not provided, two-step flow):
 
-   Show the style `name` and `mood` (first sentence) from each YAML so the user can make an informed choice. If `--style` is explicitly provided, skip this step.
+   **Step 1 — Choose style group** via `AskUserQuestion` (4 options):
+   | Group | Styles | Description |
+   |-------|--------|-------------|
+   | Professional | business, minimal, notion, scientific, editorial-infographic | 商务、学术、数据驱动场景 |
+   | Creative | creative, bold-editorial, vector-illustration, sketch-notes, watercolor | 设计、营销、艺术场景 |
+   | Tech / Dark | tech, blueprint, intuition-machine, pixel-art | 技术演示、产品发布、暗色系 |
+   | Thematic | chalkboard, fantasy-animation, vintage | 教育、故事、复古主题 |
+
+   **Step 2 — Choose specific style** via `AskUserQuestion` (2-4 options from the selected group):
+   Read each candidate style's YAML, present with `preview` field showing:
+   ```
+   {name}
+   Mood: {mood first sentence}
+   Colors: ██ {primary} ██ {accent} ██ {card_bg}
+   Font: {heading_font first entry}
+   ```
+   If the group has >4 styles, split into two questions or show the top 4 most relevant to the topic.
+
+   If `--style` is explicitly provided, skip both steps.
 2. Parse `--brand-colors` flag (optional). If provided, read the brand YAML file which should contain:
    ```yaml
    brand:
