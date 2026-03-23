@@ -191,6 +191,8 @@ Generate professional PPT slides as SVG files (1280x720) through a structured mu
 ```
 On `--run-id` resume: read `slide-status.json`, skip slides already marked `passed` or `accepted_with_warning`, and continue from the first incomplete slide.
 
+**MANDATORY**: For EVERY slide, the lead MUST run BOTH slide-core (design) AND review-core (review) before proceeding. Do NOT skip per-slide review. Do NOT jump to holistic review or Phase 7 until every slide has a `reviews/review-{nn}.md` file. Per-slide review is the core value of Phase 6 — without it, the entire dual-model architecture is wasted.
+
 For each slide (or in batches):
 
 1. **Claude generates** final design SVG:
@@ -200,12 +202,13 @@ For each slide (or in batches):
    Applies Bento Grid layout + style tokens → `${RUN_DIR}/slides/slide-{nn}.svg`.
    slide-core performs post-generation automated validation (XML validity, viewBox, font-size floor, safe area) before reporting completion. review-core also runs pre-review automated checks to skip expensive LLM review for trivially broken SVGs.
 
-2. **Gemini reviews** the generated SVG:
+2. **MANDATORY — Gemini reviews** the generated SVG (do NOT skip this step):
    ```text
    Task(subagent_type="ppt-agent:review-core", prompt="run_dir=${RUN_DIR} mode=review slide_index=${N}")
    ```
    Checks layout balance, color harmony, typography, readability, information density.
-   Outputs `${RUN_DIR}/reviews/review-{nn}.md` with pass/fail + fix suggestions.
+   Outputs `${RUN_DIR}/reviews/review-{nn}.md` with typed optimization suggestions + pass/fail.
+   **This step MUST produce a review file for EVERY slide.** If review-core is not dispatched, Phase 6 is incomplete.
 
 3. **Fix loop** (adaptive budget per Weighted Scoring Model): if review fails, action depends on initial weighted score:
    - Score >= 7.0 + gates pass: no fixes needed.
@@ -223,7 +226,9 @@ For each slide (or in batches):
    ```
    Then re-run review-core. If still failing after max rounds, accept current version with quality note.
 
-4. **Holistic deck review** (after all individual slides pass):
+4. **Pre-holistic verification gate**: Before launching holistic review, the lead MUST verify that `reviews/review-{nn}.md` exists for EVERY slide in the deck. Count the review files and compare against the total slide count. If any per-slide review is missing, go back and dispatch review-core for the missing slides. Do NOT proceed to holistic review with incomplete per-slide reviews.
+
+5. **Holistic deck review** (after ALL individual slides have reviews):
    ```text
    Task(subagent_type="ppt-agent:review-core", prompt="run_dir=${RUN_DIR} mode=holistic")
    ```
