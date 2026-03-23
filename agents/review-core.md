@@ -4,10 +4,9 @@ description: "Layout and aesthetic optimization agent for SVG slides via Gemini"
 tools:
   - Read
   - Write
+  - Skill
   - SendMessage
   - Bash
-skills:
-  - gemini-cli
 memory: project
 model: sonnet
 color: yellow
@@ -52,35 +51,13 @@ Only proceed to LLM review if no Critical automated checks fail.
    - The **full SVG source code** (MUST be included — reviewing by filename alone is forbidden per `gemini-cli/SKILL.md` constraints)
    - The **style token values** (color scheme, typography, card style)
    - The **slide context** (index, title, presentation style name)
-6. Call Gemini for layout & aesthetic optimization via the `invoke-gemini-ppt.ts` script (preloaded from `gemini-cli` skill):
-   ```bash
-   # Write the review prompt to a temp file to avoid shell escaping issues with large SVG content
-   # The prompt MUST include the full SVG source, style tokens, and slide context
-   cat > "${run_dir}/reviews/.prompt-${slide_index}.tmp" << 'PROMPT_EOF'
-   ## Task
-   Optimize SVG slide ${slide_index} layout and visual aesthetics.
-   Primary output: typed optimization suggestions. Secondary: quality gate scores.
-
-   ## Slide Content
-   ${SVG_SOURCE}
-
-   ## Style Reference
-   ${STYLE_NAME} with tokens: ${STYLE_TOKENS}
-
-   ## Output Format
-   Follow the reviewer role prompt (auto-prepended by the script):
-   Optimization Suggestions (typed, 5-type taxonomy) → Suggestions JSON → Quality Gate.
-   PROMPT_EOF
-
-   # Call Gemini — the script auto-prepends references/roles/reviewer.md and tries fallback models
-   npx tsx skills/gemini-cli/scripts/invoke-gemini-ppt.ts \
-     --role reviewer \
-     --prompt "$(cat "${run_dir}/reviews/.prompt-${slide_index}.tmp")" \
-     --output "${run_dir}/reviews/gemini-raw-${slide_index}.md"
-
-   # Check exit code: 0=success, 2=all models failed (fallback), 1=script error (retry)
+6. Call Gemini for layout & aesthetic optimization via the `ppt-agent:gemini-cli` skill.
+   The Skill tool loads the skill's SKILL.md into context at runtime (not pre-injected). The skill instructs how to call `invoke-gemini-ppt.ts` via Bash. Both `Skill` and `Bash` tools are required.
    ```
-   Gemini's raw output is written to `${run_dir}/reviews/gemini-raw-{slide_index}.md` — **this file MUST be preserved** as an intermediate artifact.
+   Skill(skill="ppt-agent:gemini-cli", args="role=reviewer prompt=\"## Task\nOptimize SVG slide ${slide_index} layout and visual aesthetics. Primary output: typed optimization suggestions. Secondary: quality gate scores.\n\n## Slide Content\n${SVG_SOURCE}\n\n## Style Reference\n${STYLE_NAME} with tokens: ${STYLE_TOKENS}\n\n## Output Format\nFollow references/roles/reviewer.md: Optimization Suggestions (typed) → Suggestions JSON → Quality Gate.\"")
+   ```
+   The skill calls `npx tsx skills/gemini-cli/scripts/invoke-gemini-ppt.ts --role reviewer --output "${run_dir}/reviews/gemini-raw-${slide_index}.md"`.
+   Gemini's raw output is written to `gemini-raw-{slide_index}.md` — **this file MUST be preserved** as an intermediate artifact.
 7. Handle the result per `gemini-cli/SKILL.md` Fallback Strategy:
    - **Gemini available (exit 0)**: Extract typed optimization suggestions from Gemini's output. Proceed to step 8.
    - **Gemini unavailable (exit 2)**: Perform **technical validation only** — run hard-rule checks (XML validity, viewBox, font-size floor, safe area, WCAG contrast, style token compliance). **No aesthetic scores, no optimization suggestions.** Mark as "Claude technical validation (Gemini unavailable) — aesthetic optimization not performed". Skip to step 9-technical.
@@ -124,8 +101,8 @@ For `mode=holistic`: read ALL `${run_dir}/slides/slide-*.svg` files and evaluate
 - Fix loop does not trigger — only hard-rule violations are blocking
 
 ## Gemini Invocation Policy
-- Call Gemini via `npx tsx skills/gemini-cli/scripts/invoke-gemini-ppt.ts` with `--role reviewer`. The script auto-prepends `references/roles/reviewer.md` as system context.
-- The `gemini-cli` skill is preloaded via frontmatter `skills` field — its SKILL.md content is available in this agent's context for reference (fallback strategy, constraints, prompt templates).
+- Use `Skill(skill="ppt-agent:gemini-cli")` with `role=reviewer` for all optimization tasks. The Skill tool loads the skill's SKILL.md at runtime, which instructs the agent to call `invoke-gemini-ppt.ts` via Bash.
+- **Both `Skill` and `Bash` tools are required** — Skill loads the instructions, Bash executes the script.
 - Do not generate SVG or modify slides directly — only assess, optimize, and suggest.
 - Preserve Gemini raw outputs (`gemini-raw-*.md`) as intermediate artifacts — never delete them.
 

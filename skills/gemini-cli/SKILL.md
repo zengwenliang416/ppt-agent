@@ -163,5 +163,5 @@ Gemini's raw output (`gemini-raw-{nn}.md`) MUST be preserved in `${RUN_DIR}/revi
 
 ## Collaboration
 
-1. **review-core** agent preloads this skill via frontmatter `skills: [gemini-cli]` and calls `invoke-gemini-ppt.ts` directly via Bash (spawned agents cannot use the `Skill()` tool — skills are injected as context, not callable functions)
+1. **review-core** agent invokes this skill via `Skill(skill="ppt-agent:gemini-cli")` at runtime. The Skill tool loads SKILL.md into the agent's context, then the agent uses Bash to call `invoke-gemini-ppt.ts`. Both `Skill` and `Bash` must be in the agent's tools list.
 2. Review output feeds back to **slide-core** for fix iterations
