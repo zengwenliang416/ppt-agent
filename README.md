@@ -1,4 +1,5 @@
-# PPT Agent
+# Act as a pathology resident,you have to present a seminar on the topic iron deficiency anemia,create a slide presentation with detailed content and suitable images
+
 
 多智能体 PPT 幻灯片生成工作流，支持跨平台运行。
 
